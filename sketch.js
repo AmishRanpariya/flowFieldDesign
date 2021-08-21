@@ -78,9 +78,9 @@ let COLOR;
 
 function setup() {
 	let canvas = createCanvas(600, 600);
-	count = floor(random(100, 10000));
+	count = floor(random(100, 5000));
 	scl = floor(random(1, 10));
-	inc = random(0.001, 0.5);
+	inc = random(0.01, 0.1);
 	strokeW = random(0.01, 1);
 	maxSpeed = random(1, 5);
 	magnitude = random(0.01, 1);
