@@ -20,7 +20,7 @@ class Particle {
 	follow(vectors) {
 		let x = floor(this.pos.x / scl);
 		let y = floor(this.pos.y / scl);
-		let index = x + y * ROWS;
+		let index = x + y * COLS;
 		let force = vectors[index];
 		this.applyForce(force);
 	}
@@ -65,6 +65,7 @@ let COLORS = [
 let scl = 2;
 let inc = 0.05;
 let strokeW = 0.1;
+let alpha = 10; //out of 255
 let maxSpeed = 1;
 let count = 10000;
 let magnitude = 1;
@@ -77,17 +78,18 @@ let zoff = 0;
 let COLOR;
 
 function setup() {
-	let canvas = createCanvas(600, 600);
+	let canvas = createCanvas(640 * 2, 360 * 2);
 	count = floor(random(100, 5000));
 	scl = floor(random(1, 10));
 	inc = random(0.01, 0.1);
 	strokeW = random(0.01, 1);
+	alpha = random(-10, 10);
 	maxSpeed = random(1, 5);
 	magnitude = random(0.01, 1);
 	zinc = random(0, 0.001);
 	COLOR = random(COLORS);
 	createP("count: " + count + "  scale: " + scl);
-	createP("strokeWeight: " + strokeW);
+	createP("strokeWeight: " + strokeW + "  Alpha: " + alpha);
 	createP("magnitude: " + magnitude);
 	createP("maxSpeed: " + maxSpeed);
 	createP("XYincrement: " + inc);
@@ -101,15 +103,17 @@ function setup() {
 	for (let i = 0; i < count; i++) {
 		particles[i] = new Particle();
 	}
-	background(0);
+	background(10);
 }
 
 function draw() {
+	background(0, alpha);
+
 	let yoff = 0;
 	for (let y = 0; y < ROWS; y++) {
 		let xoff = 0;
 		for (let x = 0; x < COLS; x++) {
-			let index = x + y * ROWS;
+			let index = x + y * COLS;
 			let r = noise(xoff, yoff, zoff);
 			let v = p5.Vector.fromAngle(r * TWO_PI * 2);
 			v.setMag(magnitude);
