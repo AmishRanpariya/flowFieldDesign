@@ -8,3 +8,16 @@ body {
 canvas {
 	display: block;
 }
+#copy-url-btn {
+	margin-top: 8px;
+	padding: 6px 16px;
+	background: #222;
+	color: #fff;
+	border: 1px solid #555;
+	border-radius: 4px;
+	cursor: pointer;
+	font-size: 14px;
+}
+#copy-url-btn:hover {
+	background: #444;
+}

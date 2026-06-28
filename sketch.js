@@ -77,23 +77,61 @@ let flowfield = [];
 let zoff = 0;
 let COLOR;
 
+function loadFromURL() {
+	let params = new URLSearchParams(window.location.search);
+	if (params.has("count")) count = int(params.get("count"));
+	else count = floor(random(100, 5000));
+	if (params.has("scl")) scl = int(params.get("scl"));
+	else scl = floor(random(1, 10));
+	if (params.has("inc")) inc = float(params.get("inc"));
+	else inc = random(0.01, 0.1);
+	if (params.has("strokeW")) strokeW = float(params.get("strokeW"));
+	else strokeW = random(0.01, 1);
+	if (params.has("alpha")) alpha = float(params.get("alpha"));
+	else alpha = random(-10, 10);
+	if (params.has("maxSpeed")) maxSpeed = float(params.get("maxSpeed"));
+	else maxSpeed = random(1, 5);
+	if (params.has("magnitude")) magnitude = float(params.get("magnitude"));
+	else magnitude = random(0.01, 1);
+	if (params.has("zinc")) zinc = float(params.get("zinc"));
+	else zinc = random(0, 0.001);
+	if (params.has("color")) COLOR = params.get("color");
+	else COLOR = random(COLORS);
+}
+
+function copyURL() {
+	let params = new URLSearchParams({
+		count: count,
+		scl: scl,
+		inc: inc,
+		strokeW: strokeW,
+		alpha: alpha,
+		maxSpeed: maxSpeed,
+		magnitude: magnitude,
+		zinc: zinc,
+		color: COLOR,
+	});
+	let url = location.origin + location.pathname + "?" + params.toString();
+	navigator.clipboard.writeText(url).then(() => {
+		let btn = document.getElementById("copy-url-btn");
+		btn.textContent = "Copied!";
+		setTimeout(() => (btn.textContent = "Copy URL"), 1500);
+	});
+}
+
 function setup() {
 	let canvas = createCanvas(640 * 2, 360 * 2);
-	count = floor(random(100, 5000));
-	scl = floor(random(1, 10));
-	inc = random(0.01, 0.1);
-	strokeW = random(0.01, 1);
-	alpha = random(-10, 10);
-	maxSpeed = random(1, 5);
-	magnitude = random(0.01, 1);
-	zinc = random(0, 0.001);
-	COLOR = random(COLORS);
+	loadFromURL();
 	createP("count: " + count + "  scale: " + scl);
 	createP("strokeWeight: " + strokeW + "  Alpha: " + alpha);
 	createP("magnitude: " + magnitude);
 	createP("maxSpeed: " + maxSpeed);
 	createP("XYincrement: " + inc);
 	createP("Zincrement: " + zinc);
+
+	let btn = createButton("Copy URL");
+	btn.id("copy-url-btn");
+	btn.mousePressed(copyURL);
 
 	canvas.mousePressed(stopr); //to save canvas as image on mousepress
 
